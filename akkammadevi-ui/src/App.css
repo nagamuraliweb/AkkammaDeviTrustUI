@@ -1,9 +1,19 @@
 .App {
   text-align: center;
 }
-.logo{
-  border: 2px solid #DB0D4B;
-  border-radius: 10px;
-  max-width: 75px;
-  max-height: 75px;
+
+body {
+  font-family: "PT Sans", serif;
 }
+
+.button-style {
+  background-color: #DB0D4B;
+  border: 0;
+  width: 100%;
+}
+
+.button-style:hover {
+  background-color: #DB0D4B;
+  border: 0;
+}
+

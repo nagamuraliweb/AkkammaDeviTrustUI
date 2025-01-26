@@ -1,0 +1,60 @@
+.donation-list {
+    padding: 50px;
+}
+
+.logo {
+    color: #DB0D4B;
+}
+.pl-0 {
+    padding-left: 0;
+}
+.pr-0 {
+    padding-right: 0;
+}
+
+.logo img {
+    border: 2px solid #DB0D4B;
+    border-radius: 10px;
+    max-width: 75px;
+    max-height: 75px;
+}
+
+.donation-list h5 {
+    margin: 40px 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.list-header {
+    background: #edecec;
+    border-bottom: 2px solid #aeaeae;
+    margin-top: 20px;
+    padding: 10px 0;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.list-content {
+    border-bottom: 1px solid #aeaeae;
+    padding: 10px 0;
+    line-height: 32px;
+}
+
+.update-button {
+    margin-right: 10px;
+    background: black;
+    border: 0;
+}
+
+.update-button:hover {
+    background: black;
+}
+
+.delete-button {
+    background: #f44336;
+    border: 0;
+}
+
+.delete-button:hover {
+    background: #f44336;
+}
