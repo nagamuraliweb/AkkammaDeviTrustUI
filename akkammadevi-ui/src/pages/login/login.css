@@ -5,23 +5,14 @@
 }
 
 .login-form {
+    max-width: 600px;
+    display: block;
+    margin: auto;
     margin-top: 100px;
-    padding: 100px 300px;
-}
-
-.logo {
-    color: #DB0D4B;
-}
-
-.logo img {
-    border: 2px solid #DB0D4B;
-    border-radius: 10px;
-    max-width: 75px;
-    max-height: 75px;
 }
 
 .login-form h5 {
-    margin: 40px 0;
+    margin: 0 0 20px 0;
     font-size: 24px;
     font-weight: 600;
 }

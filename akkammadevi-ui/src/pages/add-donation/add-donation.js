@@ -20,9 +20,8 @@ function Login() {
         <>
             <Container fluid>
                 <Row>
-                    <Col className='p-0 login-bg' xs={1} md={5}></Col>
-                    <Col className="add-donation" xs={1} md={7}>
-                        <h4 className='logo'><img src={logo} /> Galiyar Shri Akkamma Devi Thirukoil Trust</h4>
+                    <Col className="add-donation">
+                        <h4 className='logo'><img src={logo} /> Galiyar Shri Akkamma Devi Thirukoil Trust <br /><span>Sengalipalayam, Coimbatore 641022</span></h4>
                         <Form className='mt-4'>
                             <h5>Add Donation</h5>
                             <h6>Mode of payment: </h6>
@@ -37,31 +36,25 @@ function Login() {
                                     <Form.Control type="date" placeholder="Enter date" />
                                 </Form.Group></Col>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label>TIME</Form.Label>
-                                    <Form.Control type="time" placeholder="Enter time" />
-                                </Form.Group></Col>
-                            </Row>
-                            <Row>
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>NAME</Form.Label>
                                     <Form.Control type="text" placeholder="Enter name" />
                                 </Form.Group></Col>
+                            </Row>
+                            <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>MOBILE NO</Form.Label>
                                     <Form.Control type="number" placeholder="Enter mobile no" />
                                 </Form.Group></Col>
-                            </Row>
-                            <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>ADDRESS</Form.Label>
                                     <Form.Control type="text" placeholder="Enter address" />
                                 </Form.Group></Col>
+                            </Row>
+                            <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>PIN CODE</Form.Label>
                                     <Form.Control type="number" placeholder="Enter mobile no" />
                                 </Form.Group></Col>
-                            </Row>
-                            <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>PAYMENT TOWARDS</Form.Label>
                                     <Row className='payment-detail'>
@@ -80,18 +73,24 @@ function Login() {
                                         </label>
                                     </Row>
                                 </Form.Group></Col>
+                            </Row>
+                            <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>AMOUNT</Form.Label>
                                     <Form.Control type="text" placeholder="Enter amount" />
                                 </Form.Group></Col>
+                                <Col>
+                                </Col>
                             </Row>
-
-                            <Button variant="primary" className='donation-button' onClick={handleSave}>
-                                Save
-                            </Button>
-                            <Button variant="primary" className='reset-button'>
-                                Reset
-                            </Button>
+                            <Row>
+                                <Col>
+                                    <Button variant="primary" className='donation-button' onClick={handleSave}>
+                                        Save
+                                    </Button>
+                                    <Button variant="primary" className='reset-button'>
+                                        Reset
+                                    </Button></Col>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

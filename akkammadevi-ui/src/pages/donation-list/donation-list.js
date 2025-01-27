@@ -16,7 +16,7 @@ function DonationList() {
             paymentTowards: 'Pournami Pooja',
             amount: 500,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -25,7 +25,7 @@ function DonationList() {
             paymentTowards: 'Thirukkalyanam',
             amount: 1500,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -34,7 +34,7 @@ function DonationList() {
             paymentTowards: 'Annadhanam',
             amount: 2500,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -43,7 +43,7 @@ function DonationList() {
             paymentTowards: 'Pournami Pooja',
             amount: 1000,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -52,7 +52,7 @@ function DonationList() {
             paymentTowards: 'Thirukkalyanam',
             amount: 500,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -61,7 +61,7 @@ function DonationList() {
             paymentTowards: 'Pournami Pooja',
             amount: 500,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -70,7 +70,7 @@ function DonationList() {
             paymentTowards: 'Thirukkalyanam',
             amount: 2000,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -79,7 +79,7 @@ function DonationList() {
             paymentTowards: 'Pournami Pooja',
             amount: 500,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         },
         {
             name: 'Donator',
@@ -88,7 +88,7 @@ function DonationList() {
             paymentTowards: 'Pournami Pooja',
             amount: 500,
             date: '12 feb 2025',
-            time: '10 AM'
+            pincode: 641022
         }
     ];
     const navigate = useNavigate();
@@ -101,9 +101,8 @@ function DonationList() {
         <>
             <Container fluid>
                 <Row>
-                    <Col className='p-0 login-bg' xs={1} md={3}></Col>
-                    <Col className="donation-list" xs={1} md={9}>
-                        <h4 className='logo'><img src={logo} /> Galiyar Shri Akkamma Devi Thirukoil Trust</h4>
+                    <Col className="donation-list">
+                        <h4 className='logo'><img src={logo} /> Galiyar Shri Akkamma Devi Thirukoil Trust <br /><span>Sengalipalayam, Coimbatore 641022</span></h4>
                         <h5>Donator's List</h5>
                         <Row>
                             <Col xs={2} md={8} className='pl-0'><input type='text' className='form-control' placeholder='Search with donator Name and Mobile no' /></Col>
@@ -120,10 +119,10 @@ function DonationList() {
                             <Col xs={2} md={1}>Name</Col>
                             <Col xs={2} md={1}>Mobile no</Col>
                             <Col xs={2} md={2}>Address</Col>
+                            <Col xs={2} md={1}>Pincode</Col>
                             <Col xs={2} md={2}>Payment towards</Col>
                             <Col xs={2} md={1}>Amount</Col>
                             <Col xs={2} md={2}>Date</Col>
-                            <Col xs={2} md={1}>Time</Col>
                             <Col xs={2} md={2}></Col>
                         </Row>
                         {donatorsList.map((donator, index) => (
@@ -131,10 +130,10 @@ function DonationList() {
                                 <Col xs={2} md={1}>{donator.name}</Col>
                                 <Col xs={2} md={1}>{donator.mobileno}</Col>
                                 <Col xs={2} md={2}>{donator.address}</Col>
+                                <Col xs={2} md={1}>{donator.pincode}</Col>
                                 <Col xs={2} md={2}>{donator.paymentTowards}</Col>
                                 <Col xs={2} md={1}>{donator.amount}</Col>
                                 <Col xs={2} md={2}>{donator.date}</Col>
-                                <Col xs={2} md={1}>{donator.time}</Col>
                                 <Col xs={2} md={2}>
                                     <Button variant="primary" className='update-button' onClick={navigateToAddDonation}>
                                         Update

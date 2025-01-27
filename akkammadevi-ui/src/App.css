@@ -17,3 +17,20 @@ body {
   border: 0;
 }
 
+.logo {
+  color: #DB0D4B;
+}
+
+.logo img {
+  border: 2px solid #DB0D4B;
+  border-radius: 10px;
+  max-width: 75px;
+  max-height: 75px;
+}
+
+.logo span {
+  margin-left: 65px;
+  font-size: 18px;
+  position: relative;
+  bottom: 30px;
+}
