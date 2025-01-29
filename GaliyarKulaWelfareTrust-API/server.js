@@ -1,13 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
+import dotenv from 'dotenv';
 
 import { connectDB } from './config/database.connect.js';
 
-const port = process.env.port;
 const app = express();
+
+dotenv.config();
+const port = process.env.port;
 
 // Parses the text as url encoded data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,9 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Parses the text as json
 app.use(bodyParser.json());
 
-app.use(cors());
-
-dotenv.config();
+//app.use(cors());
 
 const __dirname = path.resolve();
 
