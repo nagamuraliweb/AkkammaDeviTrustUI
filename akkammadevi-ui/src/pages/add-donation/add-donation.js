@@ -5,12 +5,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from "react-router-dom";
-import akkammadevi from "../../assets/images/akkammadevi.jpg";
 import logo from "../../assets/images/logo.jpg";
 import './add-donation.css';
+import { PAYMENTTOWARDSLIST, PAYMENTTYPELIST, MONTHSLIST } from '../../constants/add-donation.contants';
 
-function Login() {
+function AddDonation() {
     const navigate = useNavigate();
+    //const [paymentsTowardsList, setPaymentsTowardsList] = useState([]);
+    //const [paymentsTowardsList, setPaymentsTowardsList] = useState([]);
 
     const handleSave = () => {
         navigate('/donation-list');
@@ -21,7 +23,11 @@ function Login() {
             <Container fluid>
                 <Row>
                     <Col className="add-donation">
-                        <h4 className='logo'><img src={logo} /> Galiyar Shri Akkamma Devi Thirukoil Trust <br /><span>Sengalipalayam, Coimbatore 641022</span></h4>
+                        <h4 className='logo'><img src={logo} /> Galiyar Shri Akkamma Devi Thirukoil Trust <br /><span>Sengalipalayam, Coimbatore 641022</span>
+                            <span className='logout'>Logout<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">
+                                <path d="M7.5 1v7h1V1z" />
+                                <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812" />
+                            </svg></span></h4>
                         <Form className='mt-4'>
                             <h5>Add Donation</h5>
                             <h6>Mode of payment: </h6>
@@ -55,32 +61,46 @@ function Login() {
                                     <Form.Label>PIN CODE</Form.Label>
                                     <Form.Control type="number" placeholder="Enter mobile no" />
                                 </Form.Group></Col>
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label>PAYMENT TOWARDS</Form.Label>
-                                    <Row className='payment-detail'>
-                                        <label>
-                                            <input type="checkbox" /> <span>Pournami Pooja (Chithirai/Panguni)</span>
-                                        </label>
-                                    </Row>
-                                    <Row className='payment-detail'>
-                                        <label>
-                                            <input type="checkbox" /> <span>Thirukkalyanam (Srinivasa Thirukalyanam/Renuka Thirukalyanam)</span>
-                                        </label>
-                                    </Row>
-                                    <Row className='payment-detail'>
-                                        <label>
-                                            <input type="checkbox" /> <span>Annadhanam (Chithirai/Panguni)</span>
-                                        </label>
-                                    </Row>
-                                </Form.Group></Col>
+                                <Col></Col>
                             </Row>
                             <Row>
+                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label>PAYMENT TOWARDS</Form.Label>
+                                    <Form.Select>
+                                        <option>Select</option>
+                                        {PAYMENTTOWARDSLIST.map(paymentTowardsOption => (
+                                            <option value={paymentTowardsOption.option}>{paymentTowardsOption.value}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group></Col>
+                                <Col>
+                                    <Form.Label>MONTH</Form.Label>
+                                    <Form.Select>
+                                        <option>Select</option>
+                                        {MONTHSLIST.map(monthOption => (
+                                            <option value={monthOption.option}>{monthOption.value}</option>
+                                        ))}
+                                    </Form.Select></Col>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>AMOUNT</Form.Label>
                                     <Form.Control type="text" placeholder="Enter amount" />
                                 </Form.Group></Col>
+                            </Row>
+                            <Row>
                                 <Col>
+                                    <Form.Label>PAYMENT TYPE</Form.Label>
+                                    <Form.Select>
+                                        <option>Select</option>
+                                        {PAYMENTTYPELIST.map(paymentTypeOption => (
+                                            <option value={paymentTypeOption.option}>{paymentTypeOption.value}</option>
+                                        ))}
+                                    </Form.Select>
                                 </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>UTR NO</Form.Label>
+                                        <Form.Control type="text" placeholder="Enter amount" />
+                                    </Form.Group></Col>
                             </Row>
                             <Row>
                                 <Col>
@@ -99,4 +119,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default AddDonation;

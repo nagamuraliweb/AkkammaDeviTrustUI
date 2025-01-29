@@ -9,6 +9,9 @@
     display: block;
     margin: auto;
     margin-top: 100px;
+    background: #eeeeee;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .login-form h5 {
@@ -27,7 +30,6 @@
     border: 0;
     border-bottom: 2px solid #aeaeae;
     border-radius: 0;
-    padding-left: 0;
     font-size: 14px;
     margin-bottom: 30px;
 }
