@@ -1,0 +1,19 @@
+{
+  "name": "galiyarkulawelfaretrust",
+  "version": "1.0.0",
+  "description": "Galiyar welfare trust ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nagamuraliweb/GaliyarKulaWelfareTrust.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nagamuraliweb/GaliyarKulaWelfareTrust/issues"
+  },
+  "homepage": "https://github.com/nagamuraliweb/GaliyarKulaWelfareTrust#readme"
+}

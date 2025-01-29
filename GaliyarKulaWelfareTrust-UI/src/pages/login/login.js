@@ -21,9 +21,8 @@ function Login() {
             <Container fluid>
                 <Row>
                     <Col className="login-form">
-                        <h4 className='logo'><img src={logo} /> Galiyar Shri Akkamma Devi Thirukoil Trust <br /><span>Sengalipalayam, Coimbatore 641022</span></h4>
+                        <h4 className='logo'><img src={logo} /> Galiyar Kula Welfare Trust <br /><span>Sengalipalayam, Coimbatore 641022</span></h4>
                         <Form>
-                            <h5>Login</h5>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>USERNAME</Form.Label>
                                 <Form.Control type="text" placeholder="Enter username" />
