@@ -1,6 +1,6 @@
 import express from 'express';
 const donationRouter = express.Router();
-import { addDonation, deleteDonation, updateDonation, getAllDonations, getDonation } from '../controllers/donationController';
+import { addDonation, deleteDonation, updateDonation, getAllDonations, getDonation } from '../controllers/donationController.js';
 
 donationRouter.post('/', addDonation);
 
