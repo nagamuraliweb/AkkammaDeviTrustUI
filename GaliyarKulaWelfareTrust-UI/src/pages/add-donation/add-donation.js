@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -11,12 +11,18 @@ import Header from '../../components/header';
 
 function AddDonation() {
     const navigate = useNavigate();
+    const [paymentTowardsSelection, setPaymentTowardsSelection] = useState();
     //const [paymentsTowardsList, setPaymentsTowardsList] = useState([]);
     //const [paymentsTowardsList, setPaymentsTowardsList] = useState([]);
 
     const handleSave = () => {
         navigate('/donation-list');
     }
+
+    const handlePaymentTowardsChange = (event) => {
+        const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === event.target.value);
+        setPaymentTowardsSelection(selectedOption[0]);
+    };
 
     return (
         <>
@@ -55,24 +61,35 @@ function AddDonation() {
                             <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>PAYMENT TOWARDS</Form.Label>
-                                    <Form.Select>
+                                    <Form.Select onChange={handlePaymentTowardsChange}>
                                         <option>Select</option>
                                         {PAYMENTTOWARDSLIST.map(paymentTowardsOption => (
                                             <option value={paymentTowardsOption.option}>{paymentTowardsOption.value}</option>
                                         ))}
                                     </Form.Select>
                                 </Form.Group></Col>
-                                <Col>
+                                {paymentTowardsSelection?.isDateSelection ?
+                                <Col><Form.Group className="mb-3" controlId="formBasicEmail">
+                                    <Form.Label>DATE</Form.Label>
+                                    <Form.Control type="date" placeholder="Enter date" />
+                                </Form.Group></Col> :
+                                paymentTowardsSelection?.isManualSelection ?
+                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label>Enter</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter" />
+                                </Form.Group></Col>
+                                : <Col>
                                     <Form.Label>MONTH</Form.Label>
-                                    <Form.Select>
+                                    <Form.Select multiple={paymentTowardsSelection?.isMultiSelected}>
                                         <option>Select</option>
                                         {MONTHSLIST.map(monthOption => (
                                             <option value={monthOption.option}>{monthOption.value}</option>
                                         ))}
                                     </Form.Select></Col>
+                                }
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>AMOUNT</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter amount" />
+                                    <Form.Control disabled={paymentTowardsSelection?.defaultAmount} type="text" placeholder="Enter amount" value={paymentTowardsSelection?.defaultAmount ?? ''} />
                                 </Form.Group></Col>
                             </Row>
                             <Row>

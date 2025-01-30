@@ -1,13 +1,13 @@
 export const PAYMENTTOWARDSLIST = [{ option: 'Corpus fund', value: 'Corpus Fund' },
 { option: 'Corpus fund annadanam', value: 'Corpus fund annadanam' },
 { option: 'Corpus fund education', value: 'Corpus fund education' },
-{ option: 'Pournami pooja', value: 'Pournami pooja' },
-{ option: 'Pournami annadanam', value: 'Pournami annadanam' },
+{ option: 'Pournami pooja', value: 'Pournami pooja', isMultiSelected: true },
+{ option: 'Pournami annadanam', value: 'Pournami annadanam', defaultAmount: 10000 },
 { option: 'Thirumanjana pooja', value: 'Thirumanjana pooja' },
 { option: 'Margazhi pooja', value: 'Margazhi pooja' },
-{ option: 'Thirukkalyana pooja', value: 'Thirukkalyana pooja' },
+{ option: 'Thirukkalyana pooja', value: 'Thirukkalyana pooja', isDateSelection: true, defaultAmount: 30000 },
 { option: 'Donation', value: 'Donation' },
-{ option: 'Others', value: 'Others' }];
+{ option: 'Others', value: 'Others', isManualSelection: true }];
 
 export const PAYMENTTYPELIST = [{ option: 'Cash', value: 'Cash' },
 { option: 'Gpay/PhonePe', value: 'Gpay/PhonePe' },
