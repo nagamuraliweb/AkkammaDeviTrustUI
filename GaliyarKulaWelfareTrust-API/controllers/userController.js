@@ -1,4 +1,4 @@
-import User from '../models/userSchema';
+import User from '../models/userSchema.js';
 
 //check user exist
 export const login = async (req, res) => {

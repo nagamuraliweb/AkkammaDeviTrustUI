@@ -4,7 +4,9 @@
   "description": "Galiyar welfare trust ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx cross-env NODE_ENV=development nodemon GaliyarKulaWelfareTrust-API/server.js",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npx cross-env NODE_ENV=production node GaliyarKulaWelfareTrust-API/server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,18 @@
   "bugs": {
     "url": "https://github.com/nagamuraliweb/GaliyarKulaWelfareTrust/issues"
   },
-  "homepage": "https://github.com/nagamuraliweb/GaliyarKulaWelfareTrust#readme"
+  "homepage": "https://github.com/nagamuraliweb/GaliyarKulaWelfareTrust#readme",
+  "proxy": "http://localhost:5000",
+  "type": "module",
+  "keywords": [],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.9"
+  }
 }

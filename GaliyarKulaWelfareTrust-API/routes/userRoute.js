@@ -1,10 +1,10 @@
 import express from 'express';
 
 const router = express.Router();
-import { getAllUsers, login } from '../controllers/userController';
+import { login } from '../controllers/userController.js';
 
-router.get('/api/login', login());
+router.post('/', login);
 
-router.get('/api/getAllUsers', getAllUsers());
+// router.get('/api/getAllUsers', getAllUsers());
 
 export default router;
