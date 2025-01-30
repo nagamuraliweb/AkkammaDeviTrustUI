@@ -20,7 +20,7 @@ export const login = async (req, res) => {
 };
 
 //get all users
-export const getAllUers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
         if (!users) {

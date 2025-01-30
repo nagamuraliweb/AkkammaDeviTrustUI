@@ -3,7 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
 import { connectDB } from './config/database.connect.js';
-import loginRouter from './routes/userRoute.js';
+import userRoute from './routes/userRoute.js';
 
 const app = express();
 
@@ -16,7 +16,8 @@ app.use(cors());
 
 const __dirname = path.resolve();
 
-app.use('/api/login', loginRouter);
+app.use('/api/login', userRoute);
+app.use('/api/getAllUsers', userRoute);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
