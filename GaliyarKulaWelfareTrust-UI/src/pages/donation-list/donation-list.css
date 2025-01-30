@@ -32,20 +32,29 @@
 }
 
 .update-button {
-    margin-right: 10px;
-    background: black;
+    margin-right: 5px;
+    background: white;
     border: 0;
+    color: black;
 }
 
 .update-button:hover {
-    background: black;
+    background: white;
+    color: black;
 }
 
 .delete-button {
-    background: #f44336;
+    background: white;
+    color: red;
     border: 0;
 }
 
 .delete-button:hover {
-    background: #f44336;
+    background: white;
+    color: red;
+}
+
+svg {
+    width: 18px;
+    height: 18px;
 }

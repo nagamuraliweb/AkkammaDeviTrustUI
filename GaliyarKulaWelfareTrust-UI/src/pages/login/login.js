@@ -45,7 +45,7 @@ function Login() {
             const res = await fetch('/api/login', { 'method': 'POST', 'headers': { 'Content-Type': 'application/json' }, 'body': JSON.stringify({ username, password }) });
             const data = await res.json();
             if (data.status === 'Success') {
-                localStorage.setItem('logged_user', 'true');
+                localStorage.setItem('logged_user', true);
                 navigate('/donation-list');
             }
         }
@@ -60,13 +60,13 @@ function Login() {
                         <Form>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>USERNAME</Form.Label>
-                                <Form.Control type="text" placeholder="Enter username" name="username" onChange={(e) => handleUsername(e.target.value)} />
+                                <Form.Control type="text" placeholder="Enter username" name="username" onChange={(e) => handleUsername(e.target.value)} autoComplete='off' />
                                 {usernameError ? <span className="field-error">Please enter username</span> : <></>}
                             </Form.Group >
 
                             <Form.Group className="mb-4" controlId="formBasicPassword">
                                 <Form.Label>PASSWORD</Form.Label>
-                                <Form.Control type="password" placeholder="Enter password" name="password" onChange={(e) => handlePassword(e.target.value)} />
+                                <Form.Control type="password" placeholder="Enter password" name="password" onChange={(e) => handlePassword(e.target.value)}  autoComplete='off' />
                                 {passwordError ? <span className="field-error">Please enter password</span> : <></>}
                             </Form.Group >
                             <Button variant="primary" className='button-style' onClick={handleLogin}>
