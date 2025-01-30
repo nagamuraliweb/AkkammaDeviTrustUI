@@ -47,3 +47,8 @@ body {
 .logout svg {
   margin-left: 5px;
 }
+
+.field-error {
+  color: red;
+  font-size: 14px;
+}
