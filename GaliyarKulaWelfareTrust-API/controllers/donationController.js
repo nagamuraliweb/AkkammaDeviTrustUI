@@ -14,7 +14,7 @@ export const addDonation = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
     }
-}
+};
 
 //delete donation
 export const deleteDonation = async (req, res) => {
@@ -29,7 +29,7 @@ export const deleteDonation = async (req, res) => {
     } catch (error) {
         res.status(500).json({ status: "Failed", message: error.message });
     }
-}
+};
 
 //update existing donation
 export const updateDonation = async (req, res) => {
@@ -44,7 +44,7 @@ export const updateDonation = async (req, res) => {
     } catch (error) {
         res.status(500).json({ status: "Failed", message: error.message });
     }
-}
+};
 
 //get all donations
 export const getAllDonations = async (req, res) => {
@@ -58,7 +58,7 @@ export const getAllDonations = async (req, res) => {
     } catch (error) {
         res.status(400).json({ status: "Failed", message: error });
     }
-}
+};
 
 //get donation by name
 export const getDonation = async (req, res) => {
@@ -73,4 +73,4 @@ export const getDonation = async (req, res) => {
     } catch (error) {
         res.status(500).json({ status: "Failed", message: error.message });
     }
-}
+};

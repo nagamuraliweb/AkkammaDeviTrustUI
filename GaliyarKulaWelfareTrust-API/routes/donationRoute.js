@@ -1,16 +1,15 @@
 import express from 'express';
-const router = express.Router();
-
+const donationRouter = express.Router();
 import { addDonation, deleteDonation, updateDonation, getAllDonations, getDonation } from '../controllers/donationController';
 
-router.post('/', addDonation);
+donationRouter.post('/', addDonation);
 
-router.delete('/', deleteDonation);
+donationRouter.delete('/', deleteDonation);
 
-router.put('/', updateDonation);
+donationRouter.put('/', updateDonation);
 
-router.get('/', getAllDonations);
+donationRouter.get('/', getAllDonations);
 
-router.get('/', getDonation);
+donationRouter.get('/', getDonation);
 
-export default router;
+export default donationRouter;
