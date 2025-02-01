@@ -20,8 +20,8 @@ function DonationList() {
             const res = await donationList.json();
             setDonations(res.data);
             setFilteredDonations(res.data);
-          }
-          fetchData();
+        }
+        fetchData();
     }, []);
 
     const navigateToAddDonation = () => {
@@ -35,6 +35,7 @@ function DonationList() {
         const data = await response.json();
         if (data.status === 'Success') {
             setDonations(donations.filter(donation => donation._id !== id));
+            setFilteredDonations(filteredDonations.filter(donation => donation._id !== id));
         }
     }
 
@@ -98,51 +99,44 @@ function DonationList() {
                             <Col xs={2} md={1}>Name</Col>
                             <Col xs={2} md={1}>Mobile no</Col>
                             <Col xs={2} md={2}>Address</Col>
-                            <Col xs={2} md={1}>Pincode</Col>
                             <Col xs={2} md={2}>Payment towards</Col>
-                            <Col xs={2} md={1}>Month</Col>
-                            <Col xs={2} md={2}>Payment towards Date</Col>
-                            <Col xs={2} md={2}>Payment towards Others</Col>
+                            <Col xs={2} md={2}>Month</Col>
                             <Col xs={2} md={1}>Amount</Col>
-                            <Col xs={2} md={1}>Payment type</Col>
-                            <Col xs={2} md={1}>Date</Col>
+                            <Col xs={2} md={2}>Payment type</Col>
                             <Col xs={2} md={1}></Col>
                         </Row>
-                        {filteredDonations.length > 0 && filteredDonations.map((donator) => (
-                            <Row className='list-content'>
-                                <Col xs={2} md={1}>{donator.name}</Col>
-                                <Col xs={2} md={1}>{donator.mobileno}</Col>
-                                <Col xs={2} md={2}>{donator.address}</Col>
-                                <Col xs={2} md={1}>{donator.pincode}</Col>
-                                <Col xs={2} md={2}>{donator.paymenttowards}</Col>
-                                <Col xs={2} md={1}>{donator.month}</Col>
-                                <Col xs={2} md={1}>{donator.paymenttowardsdate}</Col>
-                                <Col xs={2} md={1}>{donator.paymenttowardsothers}</Col>
-                                <Col xs={2} md={1}>{donator.amount}</Col>
-                                <Col xs={2} md={1}>{donator.paymenttype}</Col>
-                                <Col xs={2} md={1}>{donator.date}</Col>
-                                <Col xs={2} md={1}>
-                                    <Button variant="primary" className='update-button' onClick={() => handlePrint(donator._id)} title='Update'>
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
-                                        <path opacity="0.5" d="M17 9.00195C19.175 9.01406 20.3529 9.11051 21.1213 9.8789C22 10.7576 22 12.1718 22 15.0002V16.0002C22 18.8286 22 20.2429 21.1213 21.1215C20.2426 22.0002 18.8284 22.0002 16 22.0002H8C5.17157 22.0002 3.75736 22.0002 2.87868 21.1215C2 20.2429 2 18.8286 2 16.0002L2 15.0002C2 12.1718 2 10.7576 2.87868 9.87889C3.64706 9.11051 4.82497 9.01406 7 9.00195" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-                                        <path d="M12 2L12 15M12 15L9 11.5M12 15L15 11.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g>
-                                    </svg>
-                                    </Button>
-                                    <Button variant="primary" className='update-button' onClick={() => navigate(`/edit-donation/${donator._id}`)} title='Update'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                                        </svg>
-                                    </Button>
-                                    <Button variant="primary" className='delete-button' onClick={() => handleOnDelete(donator._id)} title='Delete'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                                        </svg>
-                                    </Button>
-                                </Col>
-                            </Row>
-                        ))}
-
+                        <Row className='scroll-content'>
+                            {filteredDonations.length > 0 && filteredDonations.map((donator) => (
+                                <Row className='list-content'>
+                                    <Col xs={2} md={1}>{donator.name}</Col>
+                                    <Col xs={2} md={1}>{donator.mobileno}</Col>
+                                    <Col xs={2} md={2}>{donator.address}, {donator.pincode}</Col>
+                                    <Col xs={2} md={2}>{donator.paymenttowards}</Col>
+                                    <Col xs={2} md={2}>{donator.month}</Col>
+                                    <Col xs={2} md={1}>{donator.amount}</Col>
+                                    <Col xs={2} md={2}>{donator.paymenttype}</Col>
+                                    <Col xs={2} md={1}>
+                                        <Button variant="primary" className='update-button' onClick={() => handlePrint(donator._id)} title='Download'>
+                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                                                <path opacity="0.5" d="M17 9.00195C19.175 9.01406 20.3529 9.11051 21.1213 9.8789C22 10.7576 22 12.1718 22 15.0002V16.0002C22 18.8286 22 20.2429 21.1213 21.1215C20.2426 22.0002 18.8284 22.0002 16 22.0002H8C5.17157 22.0002 3.75736 22.0002 2.87868 21.1215C2 20.2429 2 18.8286 2 16.0002L2 15.0002C2 12.1718 2 10.7576 2.87868 9.87889C3.64706 9.11051 4.82497 9.01406 7 9.00195" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                                                <path d="M12 2L12 15M12 15L9 11.5M12 15L15 11.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+                                            </svg>
+                                        </Button>
+                                        <Button variant="primary" className='update-button' onClick={() => navigate(`/edit-donation/${donator._id}`)} title='Update'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                            </svg>
+                                        </Button>
+                                        <Button variant="primary" className='delete-button' onClick={() => handleOnDelete(donator._id)} title='Delete'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            ))}
+                        </Row>
                     </Col>
                 </Row>
             </Container>
