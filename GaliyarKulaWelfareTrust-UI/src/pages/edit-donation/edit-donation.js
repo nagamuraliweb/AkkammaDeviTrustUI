@@ -1,32 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate } from "react-router-dom";
-import './add-donation.css';
+import '../add-donation/add-donation.css';
 import { PAYMENTTOWARDSLIST, PAYMENTTYPELIST, MONTHSLIST } from '../../constants/add-donation.contants';
 import Header from '../../components/header';
 
-function AddDonation() {
-    const initialFormData = {
-        date: "",
-        name: "",
-        mobileno: "",
-        address: "",
-        pincode: "",
-        paymenttowards: "",
-        paymenttowardsothers: "",
-        paymenttowardsdate: "",
-        month: "",
-        amount: "",
-        paymenttype: "",
-        utrno: ""
-    };
+function EditDonation() {
+    const [initialFormData, setInitialFormData] = useState({});
     const navigate = useNavigate();
+    const { id: donationId } = useParams();
     const [formData, setFormData] = useState(initialFormData);
     const [paymentTowardsSelection, setPaymentTowardsSelection] = useState();
+
+    useEffect(() => {
+        async function fetchData() {
+            const response = await fetch(`/api/getDonation/${donationId}`, {
+                method: 'GET',
+            });
+            const result = await response.json();
+            if (result.status === 'Success') {
+                const { data } = result;
+                setInitialFormData(data);
+                setFormData(data);
+
+                const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === data.paymenttowards);
+                console.log('selectedOption', selectedOption)
+                setPaymentTowardsSelection(selectedOption[0]);
+            }
+        }
+         fetchData();
+    }, [donationId]);
 
     const handleChange = (e) => {
         const values = e.target.name === 'month' ? Array.from(e.target.selectedOptions, (option) => option.value).join(',') : e.target.value;
@@ -38,7 +46,7 @@ function AddDonation() {
 
     const handleSave = async (e) => {
         e.preventDefault();
-        const res = await fetch('/api/addDonation', {'method': 'POST', 'headers': {'Content-Type': 'application/json'}, 'body': JSON.stringify(formData)});
+        const res = await fetch(`/api/updateDonation/${donationId}`, {'method': 'PUT', 'headers': {'Content-Type': 'application/json'}, 'body': JSON.stringify(formData)});
         const data = await res.json();
         if (data.status === 'Success') {
             navigate('/donation-list');
@@ -103,7 +111,7 @@ function AddDonation() {
                                 {paymentTowardsSelection?.isDateSelection ?
                                 <Col><Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label>DATE</Form.Label>
-                                    <Form.Control type="date" name="paymenttowardsdate" placeholder="Enter date" onChange={handleChange} />
+                                    <Form.Control type="date" name="paymenttowardsdate" placeholder="Enter date" onChange={handleChange} value={formData.paymenttowardsdate}/>
                                 </Form.Group></Col> :
                                 paymentTowardsSelection?.isManualSelection ?
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
@@ -165,4 +173,4 @@ function AddDonation() {
     );
 }
 
-export default AddDonation;
+export default EditDonation;
