@@ -18,12 +18,13 @@
 
 .list-header {
     background: #edecec;
-    border-bottom: 2px solid #aeaeae;
+    border: 1px solid #aeaeae;
     margin-top: 20px;
     padding: 10px 0;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 14px;
+    padding-right: 16px;
 }
 
 .list-content {
@@ -68,12 +69,15 @@ svg {
     width: 18px;
     height: 18px;
 }
+
 .scroll-content {
-    width: 100%;
-    float: left;
     overflow-y: scroll;
-    height: -moz-calc(100% - (20px + 80px));
-    height: -webkit-calc(100% - (20px + 80px));
-    height: calc(100% - (20px + 80px));
-    display:block
+    height: -moz-calc(100% - (20px + 60px));
+    height: -webkit-calc(100% - (20px + 60px));
+    height: calc(100% - (20px + 60px));
+    display: block;
+    border: 1px solid #aeaeae;
+}
+.full-width {
+    width: 100%;
 }

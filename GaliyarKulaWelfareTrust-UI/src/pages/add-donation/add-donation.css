@@ -53,6 +53,25 @@
     float: right;
 }
 
+.reset-button:hover {
+    background: #666666;
+    border: 0;
+    float: right;
+}
+
+.back-button {
+    background: #666666;
+    border: 0;
+    float: right;
+    margin-right: 15px;
+}
+
+.back-button:hover {
+    background: #666666;
+    border: 0;
+    float: right;
+}
+
 input[type="checkbox"] {
     width: 20px;
     height: 20px;
