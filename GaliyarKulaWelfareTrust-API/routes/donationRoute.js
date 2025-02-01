@@ -10,6 +10,6 @@ donationRouter.put('/:id', updateDonation);
 
 donationRouter.get('/', getAllDonations);
 
-donationRouter.get('/', getDonation);
+donationRouter.get('/:id', getDonation);
 
 export default donationRouter;

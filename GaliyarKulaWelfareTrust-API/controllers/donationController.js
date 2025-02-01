@@ -62,13 +62,13 @@ export const getAllDonations = async (req, res) => {
 
 //get donation by name
 export const getDonation = async (req, res) => {
-    const body = req.body;
-    if (!body.name) {
-        res.status(400).json({ status: 'failed', message: "Failed" });
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ status: 'failed', message: "Failed" });
     }
 
     try {
-        const donations = await Donation.find(req.body);
+        const donations = await Donation.findOne({_id: id});
         res.status(201).json({ status: "Success", message: "Donation retrieved successfully", data: donations });
     } catch (error) {
         res.status(500).json({ status: "Failed", message: error.message });

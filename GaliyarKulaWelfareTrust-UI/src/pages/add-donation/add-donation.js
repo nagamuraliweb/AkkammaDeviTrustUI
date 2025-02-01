@@ -47,10 +47,6 @@ function AddDonation() {
 
     const handlePaymentTowardsChange = (event) => {
         const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === event.target.value);
-
-        if (selectedOption[0]?.defaultAmount) {
-            setFormData({ ...formData, amount: selectedOption[0]?.defaultAmount });
-        }
         setPaymentTowardsSelection(selectedOption[0]);
     };
 
@@ -155,7 +151,11 @@ function AddDonation() {
                                     </Button>
                                     <Button variant="primary" className='reset-button' onClick={() => setFormData(initialFormData)}>
                                         Reset
-                                    </Button></Col>
+                                    </Button>
+                                    <Button variant="primary" className='reset-button' onClick={() => navigate('/donation-list')}>
+                                        Back
+                                    </Button>
+                                </Col>
                             </Row>
                         </Form>
                     </Col>
