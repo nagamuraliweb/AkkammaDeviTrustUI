@@ -4,9 +4,9 @@ import { addDonation, deleteDonation, updateDonation, getAllDonations, getDonati
 
 donationRouter.post('/', addDonation);
 
-donationRouter.delete('/', deleteDonation);
+donationRouter.delete('/:id', deleteDonation);
 
-donationRouter.put('/', updateDonation);
+donationRouter.put('/:id', updateDonation);
 
 donationRouter.get('/', getAllDonations);
 

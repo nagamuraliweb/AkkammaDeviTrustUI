@@ -8,6 +8,8 @@ const DonationSchema = new mongoose.Schema({
     pincode: { type: Number, required: true },
     paymenttowards: { type: String, required: true },
     month: { type: String, required: false },
+    paymenttowardsdate: { type: String, required: false },
+    paymenttowardsothers: { type: String, required: false },
     amount: { type: Number, required: true },
     paymenttype: { type: String, required: true },
     utrno: { type: Number, required: false }

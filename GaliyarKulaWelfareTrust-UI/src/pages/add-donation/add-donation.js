@@ -10,17 +10,47 @@ import { PAYMENTTOWARDSLIST, PAYMENTTYPELIST, MONTHSLIST } from '../../constants
 import Header from '../../components/header';
 
 function AddDonation() {
+    const initialFormData = {
+        date: "",
+        name: "",
+        mobileno: "",
+        address: "",
+        pincode: "",
+        paymenttowards: "",
+        paymenttowardsothers: "",
+        paymenttowardsdate: "",
+        month: "",
+        amount: "",
+        paymenttype: "",
+        utrno: ""
+    };
     const navigate = useNavigate();
+    const [formData, setFormData] = useState(initialFormData);
     const [paymentTowardsSelection, setPaymentTowardsSelection] = useState();
-    //const [paymentsTowardsList, setPaymentsTowardsList] = useState([]);
-    //const [paymentsTowardsList, setPaymentsTowardsList] = useState([]);
 
-    const handleSave = () => {
-        navigate('/donation-list');
+    const handleChange = (e) => {
+        const values = e.target.name === 'month' ? Array.from(e.target.selectedOptions, (option) => option.value).join(',') : e.target.value;
+        setFormData({ ...formData, [e.target.name]: values });
+        if (e.target.name === 'paymenttowards') {
+            handlePaymentTowardsChange(e);
+        }
+    };
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        const res = await fetch('/api/addDonation', {'method': 'POST', 'headers': {'Content-Type': 'application/json'}, 'body': JSON.stringify(formData)});
+        const data = await res.json();
+        if (data.status === 'Success') {
+            navigate('/donation-list');
+        }
     }
 
     const handlePaymentTowardsChange = (event) => {
         const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === event.target.value);
+
+        if (selectedOption[0]?.defaultAmount) {
+            setFormData({ ...formData, amount: selectedOption[0]?.defaultAmount });
+        }
         setPaymentTowardsSelection(selectedOption[0]);
     };
 
@@ -30,38 +60,44 @@ function AddDonation() {
                 <Row>
                     <Col className="add-donation">
                         <Header />
-                        <Form className='mt-4'>
+                        <Form className='mt-4' onSubmit={handleSave}>
                             <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label>DATE</Form.Label>
-                                    <Form.Control type="date" placeholder="Enter date" />
+                                    <Form.Control type="date" placeholder="Enter date" name="date" value={formData.date}
+            onChange={handleChange} />
                                 </Form.Group></Col>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>NAME</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter name" />
+                                    <Form.Control type="text" placeholder="Enter name" name="name" value={formData.name}
+            onChange={handleChange} />
                                 </Form.Group></Col>
                             </Row>
                             <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>MOBILE NO</Form.Label>
-                                    <Form.Control type="number" placeholder="Enter mobile no" />
+                                    <Form.Control type="number" placeholder="Enter mobile no" name="mobileno" value={formData.mobileno}
+            onChange={handleChange} />
                                 </Form.Group></Col>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>ADDRESS</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter address" />
+                                    <Form.Control type="text" placeholder="Enter address" name="address" value={formData.address}
+            onChange={handleChange} />
                                 </Form.Group></Col>
                             </Row>
                             <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>PIN CODE</Form.Label>
-                                    <Form.Control type="number" placeholder="Enter mobile no" />
+                                    <Form.Control type="number" placeholder="Enter Pincode" name="pincode" value={formData.pincode}
+            onChange={handleChange} />
                                 </Form.Group></Col>
                                 <Col></Col>
                             </Row>
                             <Row>
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>PAYMENT TOWARDS</Form.Label>
-                                    <Form.Select onChange={handlePaymentTowardsChange}>
+                                    <Form.Select name="paymenttowards" value={formData.paymenttowards}
+            onChange={handleChange}>
                                         <option>Select</option>
                                         {PAYMENTTOWARDSLIST.map(paymentTowardsOption => (
                                             <option value={paymentTowardsOption.option}>{paymentTowardsOption.value}</option>
@@ -71,16 +107,17 @@ function AddDonation() {
                                 {paymentTowardsSelection?.isDateSelection ?
                                 <Col><Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label>DATE</Form.Label>
-                                    <Form.Control type="date" placeholder="Enter date" />
+                                    <Form.Control type="date" name="paymenttowardsdate" placeholder="Enter date" onChange={handleChange} />
                                 </Form.Group></Col> :
                                 paymentTowardsSelection?.isManualSelection ?
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>Enter</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter" />
+                                    <Form.Control type="text" placeholder="Enter" name="paymenttowardsothers" onChange={handleChange}/>
                                 </Form.Group></Col>
                                 : <Col>
                                     <Form.Label>MONTH</Form.Label>
-                                    <Form.Select multiple={paymentTowardsSelection?.isMultiSelected}>
+                                    <Form.Select multiple={paymentTowardsSelection?.isMultiSelected} name="month"
+            onChange={handleChange}>
                                         <option>Select</option>
                                         {MONTHSLIST.map(monthOption => (
                                             <option value={monthOption.option}>{monthOption.value}</option>
@@ -89,13 +126,15 @@ function AddDonation() {
                                 }
                                 <Col><Form.Group className="mb-3" controlId="formBasicPassword">
                                     <Form.Label>AMOUNT</Form.Label>
-                                    <Form.Control disabled={paymentTowardsSelection?.defaultAmount} type="text" placeholder="Enter amount" value={paymentTowardsSelection?.defaultAmount ?? ''} />
+                                    <Form.Control name="amount" disabled={paymentTowardsSelection?.defaultAmount} type="text" placeholder="Enter amount" value={paymentTowardsSelection?.defaultAmount ?? formData.amount}
+            onChange={handleChange}/>
                                 </Form.Group></Col>
                             </Row>
                             <Row>
                                 <Col>
                                     <Form.Label>PAYMENT TYPE</Form.Label>
-                                    <Form.Select>
+                                    <Form.Select name="paymenttype" value={formData.paymenttype}
+            onChange={handleChange}>
                                         <option>Select</option>
                                         {PAYMENTTYPELIST.map(paymentTypeOption => (
                                             <option value={paymentTypeOption.option}>{paymentTypeOption.value}</option>
@@ -105,15 +144,16 @@ function AddDonation() {
                                 <Col>
                                     <Form.Group className="mb-3" controlId="formBasicPassword">
                                         <Form.Label>UTR NO</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter no" />
+                                        <Form.Control name="utrno" type="text" placeholder="Enter UTR No" value={formData.utrno}
+            onChange={handleChange} />
                                     </Form.Group></Col>
                             </Row>
                             <Row>
                                 <Col>
-                                    <Button variant="primary" className='donation-button' onClick={handleSave}>
+                                    <Button variant="primary" className='donation-button' type='submit'>
                                         Save
                                     </Button>
-                                    <Button variant="primary" className='reset-button'>
+                                    <Button variant="primary" className='reset-button' onClick={() => setFormData(initialFormData)}>
                                         Reset
                                     </Button></Col>
                             </Row>

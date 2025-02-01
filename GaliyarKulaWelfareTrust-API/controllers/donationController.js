@@ -4,12 +4,11 @@ import Donation from '../models/donationSchema.js';
 export const addDonation = async (req, res) => {
     const body = req.body;
     if (!body.name || !body.mobileno) {
-        res.status(400).json({ status: 'failed', message: "Failed" });
+        return res.status(400).json({ status: 'failed', message: "Fill all the details" });
     }
-
     try {
         const donation = new Donation(body);
-        await Donation.save(donation);
+        await donation.save();
         res.status(201).json({ status: 'Success', message: "Success", data: donation });
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });
@@ -18,13 +17,13 @@ export const addDonation = async (req, res) => {
 
 //delete donation
 export const deleteDonation = async (req, res) => {
-    const donationId = req.body._id;
-    if (!donationId) {
-        res.status(400).json({ status: "Failed", message: "Donation not found" });
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ status: "Failed", message: "Donation not found" });
     }
 
     try {
-        await Donation.findByIdAndDelete(donationId);
+        await Donation.findByIdAndDelete(id);
         res.status(201).json({ status: "Success", message: "Donation deleted successfully" });
     } catch (error) {
         res.status(500).json({ status: "Failed", message: error.message });
@@ -33,13 +32,14 @@ export const deleteDonation = async (req, res) => {
 
 //update existing donation
 export const updateDonation = async (req, res) => {
+    const { id } = req.params;
     const body = req.body;
     if (!body.name || !body.mobileno) {
         res.status(400).json({ status: 'failed', message: "Failed" });
     }
 
     try {
-        const donation = await Donation.findByIdAndUpdate(req.body._id, req.body);
+        const donation = await Donation.findByIdAndUpdate(id, body, {new: true});
         res.status(201).json({ status: "Success", message: "Donation updated successfully", data: donation });
     } catch (error) {
         res.status(500).json({ status: "Failed", message: error.message });
@@ -49,7 +49,7 @@ export const updateDonation = async (req, res) => {
 //get all donations
 export const getAllDonations = async (req, res) => {
     try {
-        const donations = await Donation.find();
+        const donations = await Donation.find().sort({ updatedAt: -1 });
         if (!donations) {
             res.status(400).json({ status: "Failed", message: "Invalid login credentials" });
         }
