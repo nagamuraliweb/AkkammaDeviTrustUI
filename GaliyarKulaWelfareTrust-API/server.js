@@ -9,7 +9,7 @@ import donationRouter from './routes/donationRoute.js';
 const app = express();
 
 dotenv.config();
-const port = process.env.port;
+const port = process.env.PORT || 5000;
 
 // Parses the text as json
 app.use(express.json());
@@ -29,11 +29,11 @@ app.use('/api/getAllDonations', donationRouter);
 app.use('/api/getDonation', donationRouter);
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/GaliyarKulaWelfareTrust-UI/dist')));
+    app.use(express.static(path.join(__dirname, '/GaliyarKulaWelfareTrust-UI/build')));
 
     // re-direct to frontend
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, "GaliyarKulaWelfareTrust-UI", "dist", "index.html"));
+        res.sendFile(path.resolve(__dirname, "GaliyarKulaWelfareTrust-UI", "build", "index.html"));
     });
 }
 
