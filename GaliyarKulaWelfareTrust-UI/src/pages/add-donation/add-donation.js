@@ -152,7 +152,7 @@ function AddDonation() {
                                     <Button variant="primary" className='reset-button' onClick={() => setFormData(initialFormData)}>
                                         Reset
                                     </Button>
-                                    <Button variant="primary" className='reset-button' onClick={() => navigate('/donation-list')}>
+                                    <Button variant="primary" className='back-button' onClick={() => navigate('/donation-list')}>
                                         Back
                                     </Button>
                                 </Col>
