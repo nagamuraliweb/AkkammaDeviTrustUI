@@ -90,21 +90,21 @@ function DonationList() {
         const result = await response.json();
         if (result.status === 'Success') {
             const { data } = result;
-            // const formatData = [{
-            // 'NAME': data.name,
-            // 'DATE': data.date,
-            // 'MOBILE NO': data.mobileno.toString(),
-            // 'ADDRESS': data.address,
-            // 'PIN CODE': data.pincode.toString(),
-            // 'PAYMENT TOWARDS': data.paymenttowards,
-            // 'MONTH': data.month || '-',
-            // 'PAYMENT TOWARDS DATE': data.paymenttowardsdate || '-',
-            // 'PAYMENT TOWARDS OTHERS': data.paymenttowardsothers || '-',
-            // 'AMOUNT': data.amount.toString(),
-            // 'PAYMENT TYPE': data.paymenttype,
-            // 'UTR NO': data.utrno.toString()
-            // }];
-            generatePDF(data);
+            const formatData = {
+                'ID': data._id,
+                'NAME': data.name,
+                'DATE': data.date,
+                'MOBILE NO': data.mobileno.toString(),
+                'ADDRESS': `${data.address}-${data.pincode.toString()}`,
+                'PAYMENT TOWARDS': data.paymenttowards,
+                'MONTH': data.month || '-',
+                'PAYMENT TOWARDS DATE': data.paymenttowardsdate || '-',
+                'PAYMENT TOWARDS OTHERS': data.paymenttowardsothers || '-',
+                'AMOUNT': `Rs ${data.amount.toString()}/-`,
+                'PAYMENT TYPE': data.paymenttype,
+                'UTR NO': data.utrno.toString()
+            };
+            generatePDF(formatData);
             setNotificationContent("Donation detail downloaded successfully");
             setShowSuccessNotification(true);
             setTimeout(() => {

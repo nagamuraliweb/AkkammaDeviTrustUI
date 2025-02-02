@@ -67,6 +67,9 @@ function EditDonation() {
         if (e.target.name === 'paymenttype') {
             handlePaymentTypeChange(e);
         }
+        if (e.target.name === 'month' || e.target.name === 'paymenttowardsdate') {
+            handleMonthChange(e, values);
+        }
         handleErrorsWithName(e.target.name);
     };
 
@@ -204,6 +207,7 @@ function EditDonation() {
     const handlePaymentTowardsChange = (event) => {
         const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === event.target.value);
         setPaymentTowardsSelection(selectedOption[0]);
+        setFormData({ ...formData, amount : '', month: '', paymenttowardsdate: '', paymenttowards: selectedOption[0].option  });
         if (event.target.value) {
             setPaymentTowardsError(false);
         } else {
@@ -216,6 +220,25 @@ function EditDonation() {
             setPaymentTypeError(false);
         } else {
             setPaymentTypeError(true);
+        }
+    };
+
+    const handleMonthChange = (event, values) => {
+        const selectedMonth = values.split(',').length;
+        let amount = '';
+
+        if ((paymentTowardsSelection?.defaultAmount && selectedMonth === 0) || paymentTowardsSelection?.isDateSelection) {
+            amount = paymentTowardsSelection?.defaultAmount;
+        } else if (paymentTowardsSelection?.defaultAmount && selectedMonth > 0) {
+            amount = paymentTowardsSelection?.defaultAmount * selectedMonth;
+        }
+
+        if (event.target.name === 'paymenttowardsdate') {
+            setFormData({ ...formData, amount : amount, paymenttowardsdate: event.target.value });
+        }
+
+        if (event.target.name === 'month') {
+            setFormData({ ...formData, amount : amount, month: values });
         }
     };
 
@@ -296,7 +319,7 @@ function EditDonation() {
                                 }
                                 <Col><Form.Group className="mb-3">
                                     <Form.Label>AMOUNT</Form.Label>
-                                    <Form.Control name="amount" disabled={paymentTowardsSelection?.defaultAmount} type="text" placeholder="Enter amount" value={paymentTowardsSelection?.defaultAmount ?? formData.amount}
+                                    <Form.Control name="amount" disabled={paymentTowardsSelection?.defaultAmount} type="text" placeholder="Enter amount" value={formData.amount}
                                         onChange={handleChange} />
                                     {amountError ? <span className="field-error">Please enter amount</span> : <></>}
                                 </Form.Group></Col>
