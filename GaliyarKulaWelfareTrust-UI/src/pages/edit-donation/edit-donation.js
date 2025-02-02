@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import '../add-donation/add-donation.css';
 import { PAYMENTTOWARDSLIST, PAYMENTTYPELIST, MONTHSLIST } from '../../constants/add-donation.contants';
 import Header from '../../components/header';
+import Loader from '../../components/loader';
+import Notification from '../../components/notification';
 
 function EditDonation() {
     const [initialFormData, setInitialFormData] = useState({});
@@ -16,8 +18,21 @@ function EditDonation() {
     const { id: donationId } = useParams();
     const [formData, setFormData] = useState(initialFormData);
     const [paymentTowardsSelection, setPaymentTowardsSelection] = useState();
+    const [showLoader, setShowLoader] = useState(false);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+    const [showFailedNotification, setShowFailedNotification] = useState(false);
+    const [notificationContent, setNotificationContent] = useState("");
+    const [dateError, setDateError] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const [mobileNoError, setMobileNoError] = useState(false);
+    const [addressError, setAddressError] = useState(false);
+    const [pincodeError, setPincodeError] = useState(false);
+    const [paymentTowardsError, setPaymentTowardsError] = useState(false);
+    const [amountError, setAmountError] = useState(false);
+    const [paymentTypeError, setPaymentTypeError] = useState(false);
 
     useEffect(() => {
+        setShowLoader(true);
         async function fetchData() {
             const response = await fetch(`/api/getDonation/${donationId}`, {
                 method: 'GET',
@@ -29,11 +44,18 @@ function EditDonation() {
                 setFormData(data);
 
                 const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === data.paymenttowards);
-                console.log('selectedOption', selectedOption)
+                console.log('selectedOption', selectedOption);
                 setPaymentTowardsSelection(selectedOption[0]);
+            } else {
+                setNotificationContent(result.message);
+                setShowFailedNotification(true);
+                setTimeout(() => {
+                    setShowFailedNotification(false);
+                }, 5000);
             }
         }
-         fetchData();
+        fetchData();
+        setShowLoader(false);
     }, [donationId]);
 
     const handleChange = (e) => {
@@ -42,20 +64,159 @@ function EditDonation() {
         if (e.target.name === 'paymenttowards') {
             handlePaymentTowardsChange(e);
         }
+        if (e.target.name === 'paymenttype') {
+            handlePaymentTypeChange(e);
+        }
+        handleErrorsWithName(e.target.name);
     };
+
+    const handleErrorsWithName = (fieldName) => {
+        console.log(fieldName);
+        console.log(formData);
+        if (fieldName === "date") {
+            if (!formData.date) {
+                setDateError(true);
+            } else {
+                setDateError(false);
+            }
+        }
+
+        if (fieldName === "name") {
+            if (!formData.name) {
+                setNameError(true);
+            } else {
+                setNameError(false);
+            }
+        }
+
+        if (fieldName === "mobileno") {
+            if (!formData.mobileno) {
+                setMobileNoError(true);
+            } else {
+                setMobileNoError(false);
+            }
+        }
+
+        if (fieldName === "address") {
+            if (!formData.address) {
+                setAddressError(true);
+            } else {
+                setAddressError(false);
+            }
+        }
+
+        if (fieldName === "pincode") {
+            if (!formData.pincode) {
+                setPincodeError(true);
+            } else {
+                setPincodeError(false);
+            }
+        }
+
+        if (fieldName === "amount") {
+            if (!formData.amount) {
+                setAmountError(true);
+            } else {
+                setAmountError(false);
+            }
+        }
+    }
+
+    const handleErrors = () => {
+        if (!formData.date) {
+            setDateError(true);
+        } else {
+            setDateError(false);
+        }
+
+        if (!formData.name) {
+            setNameError(true);
+        } else {
+            setNameError(false);
+        }
+
+        if (!formData.mobileno) {
+            setMobileNoError(true);
+        } else {
+            setMobileNoError(false);
+        }
+
+        if (!formData.address) {
+            setAddressError(true);
+        } else {
+            setAddressError(false);
+        }
+
+        if (!formData.pincode) {
+            setPincodeError(true);
+        } else {
+            setPincodeError(false);
+        }
+
+        if (!formData.paymenttowards) {
+            setPaymentTowardsError(true);
+        } else {
+            setPaymentTowardsError(false);
+        }
+
+        if (!formData.amount) {
+            setAmountError(true);
+        } else {
+            setAmountError(false);
+        }
+
+        if (!formData.paymenttype) {
+            setPaymentTypeError(true);
+        } else {
+            setPaymentTypeError(false);
+        }
+    }
 
     const handleSave = async (e) => {
         e.preventDefault();
-        const res = await fetch(`/api/updateDonation/${donationId}`, {'method': 'PUT', 'headers': {'Content-Type': 'application/json'}, 'body': JSON.stringify(formData)});
-        const data = await res.json();
-        if (data.status === 'Success') {
-            navigate('/donation-list');
+
+        handleErrors(formData);
+
+        if (formData.date && formData.name && formData.mobileno &&
+            formData.address && formData.pincode && formData.paymenttowards && formData.amount &&
+            formData.paymenttype) {
+            setShowLoader(true);
+            const res = await fetch(`/api/updateDonation/${donationId}`, { 'method': 'PUT', 'headers': { 'Content-Type': 'application/json' }, 'body': JSON.stringify(formData) });
+            const data = await res.json();
+            if (data.status === 'Success') {
+                setNotificationContent(data.message);
+                setShowSuccessNotification(true);
+                setTimeout(() => {
+                    setShowSuccessNotification(false);
+                }, 5000);
+                navigate('/donation-list');
+            } else {
+                setNotificationContent(data.message);
+                setShowFailedNotification(true);
+                setTimeout(() => {
+                    setShowFailedNotification(false);
+                }, 5000);
+            }
+            setShowLoader(false);
         }
     }
 
     const handlePaymentTowardsChange = (event) => {
         const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === event.target.value);
         setPaymentTowardsSelection(selectedOption[0]);
+        if (event.target.value) {
+            setPaymentTowardsError(false);
+        } else {
+            setPaymentTowardsError(true);
+        }
+    };
+
+    const handlePaymentTypeChange = (event) => {
+        if (event.target.value) {
+            setPaymentTypeError(false);
+        } else {
+            setPaymentTypeError(true);
+        }
     };
 
     return (
@@ -66,90 +227,97 @@ function EditDonation() {
                         <Header />
                         <Form className='mt-4' onSubmit={handleSave}>
                             <Row>
-                                <Col><Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Col><Form.Group className="mb-3">
                                     <Form.Label>DATE</Form.Label>
                                     <Form.Control type="date" placeholder="Enter date" name="date" value={formData.date}
-            onChange={handleChange} />
+                                        onChange={handleChange} />
+                                    {dateError ? <span className="field-error">Please enter date</span> : <></>}
                                 </Form.Group></Col>
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Col><Form.Group className="mb-3">
                                     <Form.Label>NAME</Form.Label>
                                     <Form.Control type="text" placeholder="Enter name" name="name" value={formData.name}
-            onChange={handleChange} />
+                                        onChange={handleChange} />
+                                    {nameError ? <span className="field-error">Please enter name</span> : <></>}
                                 </Form.Group></Col>
                             </Row>
                             <Row>
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Col><Form.Group className="mb-3">
                                     <Form.Label>MOBILE NO</Form.Label>
                                     <Form.Control type="number" placeholder="Enter mobile no" name="mobileno" value={formData.mobileno}
-            onChange={handleChange} />
+                                        onChange={handleChange} />{mobileNoError ? <span className="field-error">Please enter mobile no</span> : <></>}
                                 </Form.Group></Col>
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Col><Form.Group className="mb-3">
                                     <Form.Label>ADDRESS</Form.Label>
                                     <Form.Control type="text" placeholder="Enter address" name="address" value={formData.address}
-            onChange={handleChange} />
+                                        onChange={handleChange} />
+                                    {addressError ? <span className="field-error">Please enter address</span> : <></>}
                                 </Form.Group></Col>
                             </Row>
                             <Row>
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Col><Form.Group className="mb-3">
                                     <Form.Label>PIN CODE</Form.Label>
                                     <Form.Control type="number" placeholder="Enter Pincode" name="pincode" value={formData.pincode}
-            onChange={handleChange} />
+                                        onChange={handleChange} />
+                                    {pincodeError ? <span className="field-error">Please enter pin code</span> : <></>}
                                 </Form.Group></Col>
                                 <Col></Col>
                             </Row>
                             <Row>
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Col><Form.Group className="mb-3">
                                     <Form.Label>PAYMENT TOWARDS</Form.Label>
                                     <Form.Select name="paymenttowards" value={formData.paymenttowards}
-            onChange={handleChange}>
+                                        onChange={handleChange}>
                                         <option>Select</option>
                                         {PAYMENTTOWARDSLIST.map(paymentTowardsOption => (
                                             <option value={paymentTowardsOption.option}>{paymentTowardsOption.value}</option>
                                         ))}
                                     </Form.Select>
+                                    {paymentTowardsError ? <span className="field-error">Please select payment towards</span> : <></>}
                                 </Form.Group></Col>
                                 {paymentTowardsSelection?.isDateSelection ?
-                                <Col><Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <Form.Label>DATE</Form.Label>
-                                    <Form.Control type="date" name="paymenttowardsdate" placeholder="Enter date" onChange={handleChange} value={formData.paymenttowardsdate}/>
-                                </Form.Group></Col> :
-                                paymentTowardsSelection?.isManualSelection ?
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label>Enter</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter" name="paymenttowardsothers" onChange={handleChange} value={formData.paymenttowardsothers}/>
-                                </Form.Group></Col>
-                                : <Col>
-                                    <Form.Label>MONTH</Form.Label>
-                                    <Form.Select multiple={paymentTowardsSelection?.isMultiSelected} name="month"
-            onChange={handleChange} value={paymentTowardsSelection?.isMultiSelected ? formData.month.split(',') : formData.month}>
-                                        <option>Select</option>
-                                        {MONTHSLIST.map(monthOption => (
-                                            <option value={monthOption.option}>{monthOption.value}</option>
-                                        ))}
-                                    </Form.Select></Col>
+                                    <Col><Form.Group className="mb-3">
+                                        <Form.Label>DATE</Form.Label>
+                                        <Form.Control type="date" name="paymenttowardsdate" placeholder="Enter date" onChange={handleChange} value={formData.paymenttowardsdate} />
+                                    </Form.Group></Col> :
+                                    paymentTowardsSelection?.isManualSelection ?
+                                        <Col><Form.Group className="mb-3">
+                                            <Form.Label>Enter</Form.Label>
+                                            <Form.Control type="text" placeholder="Enter" name="paymenttowardsothers" onChange={handleChange} value={formData.paymenttowardsothers} />
+                                        </Form.Group></Col>
+                                        : <Col>
+                                            <Form.Label>MONTH</Form.Label>
+                                            <Form.Select multiple={paymentTowardsSelection?.isMultiSelected} name="month"
+                                                onChange={handleChange} value={paymentTowardsSelection?.isMultiSelected ? formData.month.split(',') : formData.month}>
+                                                <option>Select</option>
+                                                {MONTHSLIST.map(monthOption => (
+                                                    <option value={monthOption.option}>{monthOption.value}</option>
+                                                ))}
+                                            </Form.Select></Col>
                                 }
-                                <Col><Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Col><Form.Group className="mb-3">
                                     <Form.Label>AMOUNT</Form.Label>
                                     <Form.Control name="amount" disabled={paymentTowardsSelection?.defaultAmount} type="text" placeholder="Enter amount" value={paymentTowardsSelection?.defaultAmount ?? formData.amount}
-            onChange={handleChange}/>
+                                        onChange={handleChange} />
+                                    {amountError ? <span className="field-error">Please enter amount</span> : <></>}
                                 </Form.Group></Col>
                             </Row>
                             <Row>
                                 <Col>
                                     <Form.Label>PAYMENT TYPE</Form.Label>
                                     <Form.Select name="paymenttype" value={formData.paymenttype}
-            onChange={handleChange}>
+                                        onChange={handleChange}>
                                         <option>Select</option>
                                         {PAYMENTTYPELIST.map(paymentTypeOption => (
                                             <option value={paymentTypeOption.option}>{paymentTypeOption.value}</option>
                                         ))}
                                     </Form.Select>
+                                    {paymentTypeError ? <span className="field-error">Please select payment type</span> : <></>}
                                 </Col>
                                 <Col>
-                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Group className="mb-3">
                                         <Form.Label>UTR NO</Form.Label>
                                         <Form.Control name="utrno" type="text" placeholder="Enter UTR No" value={formData.utrno}
-            onChange={handleChange} />
+                                            onChange={handleChange} />
                                     </Form.Group></Col>
                             </Row>
                             <Row>
@@ -157,10 +325,7 @@ function EditDonation() {
                                     <Button variant="primary" className='donation-button' type='submit'>
                                         Save
                                     </Button>
-                                    <Button variant="primary" className='reset-button' onClick={() => setFormData(initialFormData)}>
-                                        Reset
-                                    </Button>
-                                    <Button variant="primary" className='reset-button' onClick={() => navigate('/donation-list')}>
+                                    <Button variant="primary" className='back-button' onClick={() => navigate('/donation-list')}>
                                         Back
                                     </Button>
                                 </Col>
@@ -169,6 +334,9 @@ function EditDonation() {
                     </Col>
                 </Row>
             </Container>
+            {showLoader ? <Loader /> : <></>}
+            {showSuccessNotification ? <Notification content={notificationContent} variant="success" /> : <></>}
+            {showFailedNotification ? <Notification content={notificationContent} variant="danger" /> : <></>}
         </>
     );
 }

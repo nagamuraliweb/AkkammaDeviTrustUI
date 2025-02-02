@@ -7,6 +7,8 @@ import Col from 'react-bootstrap/Col';
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.jpg";
 import './login.css';
+import Loader from '../../components/loader';
+import Notification from '../../components/notification';
 
 function Login() {
     const navigate = useNavigate();
@@ -14,6 +16,9 @@ function Login() {
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [showLoader, setShowLoader] = useState(false);
+    const [showFailedNotification, setShowFailedNotification] = useState(false);
+    const [notificationContent, setNotificationContent] = useState("");
 
     const handleUsername = (name) => {
         setUsername(name);
@@ -41,14 +46,23 @@ function Login() {
             setPasswordError(true);
         }
 
+        setShowLoader(true);
+
         if (username && password) {
             const res = await fetch('/api/login', { 'method': 'POST', 'headers': { 'Content-Type': 'application/json' }, 'body': JSON.stringify({ username, password }) });
             const data = await res.json();
             if (data.status === 'Success') {
                 localStorage.setItem('logged_user', true);
                 navigate('/donation-list');
+            } else {
+                setNotificationContent(data.message);
+                setShowFailedNotification(true);
+                setTimeout(()=>{
+                    setShowFailedNotification(false);
+                }, 5000)
             }
         }
+        setShowLoader(false);
     }
 
     return (
@@ -66,7 +80,7 @@ function Login() {
 
                             <Form.Group className="mb-4" controlId="formBasicPassword">
                                 <Form.Label>PASSWORD</Form.Label>
-                                <Form.Control type="password" placeholder="Enter password" name="password" onChange={(e) => handlePassword(e.target.value)}  autoComplete='off' />
+                                <Form.Control type="password" placeholder="Enter password" name="password" onChange={(e) => handlePassword(e.target.value)} autoComplete='off' />
                                 {passwordError ? <span className="field-error">Please enter password</span> : <></>}
                             </Form.Group >
                             <Button variant="primary" className='button-style' onClick={handleLogin}>
@@ -76,6 +90,8 @@ function Login() {
                     </Col >
                 </Row >
             </Container >
+            {showLoader ? <Loader /> : <></>}
+            {showFailedNotification ? <Notification content={notificationContent} variant="danger" /> : <></>}
         </>
     );
 }

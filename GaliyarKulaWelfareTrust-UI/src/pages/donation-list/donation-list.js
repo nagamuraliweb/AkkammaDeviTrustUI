@@ -7,21 +7,37 @@ import { useNavigate } from "react-router-dom";
 import './donation-list.css';
 import Header from '../../components/header';
 import { generatePDF } from '../../helpers/generatePDF';
+import Loader from '../../components/loader';
+import Notification from '../../components/notification';
 
 function DonationList() {
     const navigate = useNavigate();
     const [donations, setDonations] = useState([]);
     const [filteredDonations, setFilteredDonations] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [showLoader, setShowLoader] = useState(false);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+    const [showFailedNotification, setShowFailedNotification] = useState(false);
+    const [notificationContent, setNotificationContent] = useState("");
 
     useEffect(() => {
+        setShowLoader(true);
         async function fetchData() {
             const donationList = await fetch('/api/getAllDonations', { 'method': 'GET' });
             const res = await donationList.json();
-            setDonations(res.data);
-            setFilteredDonations(res.data);
+            if (res.status === "Success") {
+                setDonations(res.data);
+                setFilteredDonations(res.data);
+            } else {
+                setNotificationContent(res.message);
+                setShowFailedNotification(true);
+                setTimeout(() => {
+                    setShowFailedNotification(false);
+                }, 5000);
+            }
         }
         fetchData();
+        setShowLoader(false);
     }, []);
 
     const navigateToAddDonation = () => {
@@ -29,17 +45,31 @@ function DonationList() {
     }
 
     const handleOnDelete = async (id) => {
+        setShowLoader(true);
         const response = await fetch(`/api/deleteDonation/${id}`, {
             method: 'DELETE',
         });
         const data = await response.json();
         if (data.status === 'Success') {
             setDonations(donations.filter(donation => donation._id !== id));
-            setFilteredDonations(filteredDonations.filter(donation => donation._id !== id));
+            setFilteredDonations(filteredDonations.filter(donation => donation._id !== id)); setNotificationContent("Donation detail downloaded successfully");
+            setNotificationContent(data.message);
+            setShowSuccessNotification(true);
+            setTimeout(() => {
+                setShowSuccessNotification(false);
+            }, 5000);
+        } else {
+            setNotificationContent(data.message);
+            setShowFailedNotification(true);
+            setTimeout(() => {
+                setShowFailedNotification(false);
+            }, 5000);
         }
+        setShowLoader(false);
     }
 
     const handleSearch = useCallback(() => {
+        setShowLoader(true);
         if (donations.length > 0 && searchText !== '') {
             const filterList = donations.filter((donation) =>
                 donation.name.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -49,9 +79,11 @@ function DonationList() {
         } else {
             setFilteredDonations(donations);
         }
+        setShowLoader(false);
     }, [donations, searchText]);
 
     const handlePrint = async (id) => {
+        setShowLoader(true);
         const response = await fetch(`/api/getDonation/${id}`, {
             method: 'GET',
         });
@@ -73,7 +105,19 @@ function DonationList() {
             // 'UTR NO': data.utrno.toString()
             // }];
             generatePDF(data);
+            setNotificationContent("Donation detail downloaded successfully");
+            setShowSuccessNotification(true);
+            setTimeout(() => {
+                setShowSuccessNotification(false);
+            }, 5000);
+        } else {
+            setNotificationContent(result.message);
+            setShowFailedNotification(true);
+            setTimeout(() => {
+                setShowFailedNotification(false);
+            }, 5000);
         }
+        setShowLoader(false);
     }
 
     return (
@@ -142,6 +186,9 @@ function DonationList() {
                     </Col>
                 </Row>
             </Container>
+            {showLoader ? <Loader /> : <></>}
+            {showSuccessNotification ? <Notification content={notificationContent} variant="success" /> : <></>}
+            {showFailedNotification ? <Notification content={notificationContent} variant="danger" /> : <></>}
         </>
     );
 }
