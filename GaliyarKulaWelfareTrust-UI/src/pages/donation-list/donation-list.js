@@ -102,7 +102,7 @@ function DonationList() {
                 'PAYMENT TOWARDS OTHERS': data.paymenttowardsothers || '-',
                 'AMOUNT': `Rs ${data.amount.toString()}/-`,
                 'PAYMENT TYPE': data.paymenttype,
-                'UTR NO': data.utrno.toString()
+                'UTR NO': data?.utrno ? data.utrno.toString() : '-'
             };
             generatePDF(formatData);
             setNotificationContent("Donation detail downloaded successfully");
