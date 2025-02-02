@@ -72,9 +72,9 @@ svg {
 
 .scroll-content {
     overflow-y: scroll;
-    height: -moz-calc(100% - (20px + 60px));
-    height: -webkit-calc(100% - (20px + 60px));
-    height: calc(100% - (20px + 60px));
+    height: -moz-calc(100% - (20px + 240px));
+    height: -webkit-calc(100% - (20px + 240px));
+    height: calc(100% - (20px + 240px));
     display: block;
     border: 1px solid #aeaeae;
 }

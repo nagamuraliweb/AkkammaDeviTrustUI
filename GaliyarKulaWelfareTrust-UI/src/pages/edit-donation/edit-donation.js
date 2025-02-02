@@ -67,19 +67,13 @@ function EditDonation() {
         if (e.target.name === 'paymenttype') {
             handlePaymentTypeChange(e);
         }
+        if (e.target.name === 'date') {
+            handleDateChange(e);
+        }
         handleErrorsWithName(e.target.name);
     };
 
     const handleErrorsWithName = (fieldName) => {
-        console.log(fieldName);
-        console.log(formData);
-        if (fieldName === "date") {
-            if (!formData.date) {
-                setDateError(true);
-            } else {
-                setDateError(false);
-            }
-        }
 
         if (fieldName === "name") {
             if (!formData.name) {
@@ -216,6 +210,14 @@ function EditDonation() {
             setPaymentTypeError(false);
         } else {
             setPaymentTypeError(true);
+        }
+    };
+
+    const handleDateChange = (event) => {
+        if (event.target.value) {
+            setDateError(false);
+        } else {
+            setDateError(true);
         }
     };
 
