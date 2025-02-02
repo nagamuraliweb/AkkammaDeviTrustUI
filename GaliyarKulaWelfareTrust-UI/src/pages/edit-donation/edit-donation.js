@@ -44,7 +44,6 @@ function EditDonation() {
                 setFormData(data);
 
                 const selectedOption = PAYMENTTOWARDSLIST.filter(e => e.option === data.paymenttowards);
-                console.log('selectedOption', selectedOption);
                 setPaymentTowardsSelection(selectedOption[0]);
             } else {
                 setNotificationContent(result.message);
@@ -132,7 +131,7 @@ function EditDonation() {
             setNameError(false);
         }
 
-        if (!formData.mobileno) {
+        if (!formData.mobileno || formData.mobileno.toString().length !== 10) {
             setMobileNoError(true);
         } else {
             setMobileNoError(false);
@@ -144,7 +143,7 @@ function EditDonation() {
             setAddressError(false);
         }
 
-        if (!formData.pincode) {
+        if (!formData.pincode || formData.pincode.toString().length !== 6) {
             setPincodeError(true);
         } else {
             setPincodeError(false);
@@ -174,8 +173,8 @@ function EditDonation() {
 
         handleErrors(formData);
 
-        if (formData.date && formData.name && formData.mobileno &&
-            formData.address && formData.pincode && formData.paymenttowards && formData.amount &&
+        if (formData.date && formData.name && formData.mobileno && formData.mobileno.toString().length === 10 &&
+            formData.address && formData.pincode && formData.pincode.toString().length === 6 && formData.paymenttowards && formData.amount &&
             formData.paymenttype) {
             setShowLoader(true);
             const res = await fetch(`/api/updateDonation/${donationId}`, { 'method': 'PUT', 'headers': { 'Content-Type': 'application/json' }, 'body': JSON.stringify(formData) });
@@ -268,8 +267,14 @@ function EditDonation() {
                             <Row>
                                 <Col><Form.Group className="mb-3">
                                     <Form.Label>MOBILE NO</Form.Label>
-                                    <Form.Control type="number" placeholder="Enter mobile no" name="mobileno" value={formData.mobileno}
-                                        onChange={handleChange} />{mobileNoError ? <span className="field-error">Please enter mobile no</span> : <></>}
+                                    <Form.Control type="text" placeholder="Enter mobile no" name="mobileno" value={formData.mobileno}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            // Allow only numeric values and limit to 10 digits
+                                            if (/^\d*$/.test(value) && value.length <= 10) {
+                                                handleChange(e); // Update form data
+                                            }
+                                        }} />{mobileNoError ? <span className="field-error">Please enter mobile no</span> : <></>}
                                 </Form.Group></Col>
                                 <Col><Form.Group className="mb-3">
                                     <Form.Label>ADDRESS</Form.Label>
@@ -281,8 +286,14 @@ function EditDonation() {
                             <Row>
                                 <Col><Form.Group className="mb-3">
                                     <Form.Label>PIN CODE</Form.Label>
-                                    <Form.Control type="number" placeholder="Enter Pincode" name="pincode" value={formData.pincode}
-                                        onChange={handleChange} />
+                                    <Form.Control type="text" placeholder="Enter Pincode" name="pincode" value={formData.pincode}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            // Allow only numeric values and limit to 10 digits
+                                            if (/^\d*$/.test(value) && value.length <= 6) {
+                                                handleChange(e); // Update form data
+                                            }
+                                        }} />
                                     {pincodeError ? <span className="field-error">Please enter pin code</span> : <></>}
                                 </Form.Group></Col>
                                 <Col></Col>
@@ -339,11 +350,12 @@ function EditDonation() {
                                     {paymentTypeError ? <span className="field-error">Please select payment type</span> : <></>}
                                 </Col>
                                 <Col>
-                                    <Form.Group className="mb-3">
+                                    {formData.paymenttype && formData.paymenttype !== "Cash" ? <Form.Group className="mb-3">
                                         <Form.Label>UTR NO</Form.Label>
                                         <Form.Control name="utrno" type="text" placeholder="Enter UTR No" value={formData.utrno}
                                             onChange={handleChange} />
-                                    </Form.Group></Col>
+                                    </Form.Group> : <></>}
+                                </Col>
                             </Row>
                             <Row>
                                 <Col>

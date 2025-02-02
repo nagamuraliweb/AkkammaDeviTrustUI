@@ -116,7 +116,7 @@ function AddDonation() {
             setNameError(false);
         }
 
-        if (!formData.mobileno) {
+        if (!formData.mobileno || formData.mobileno.toString().length !== 10) {
             setMobileNoError(true);
         } else {
             setMobileNoError(false);
@@ -128,7 +128,7 @@ function AddDonation() {
             setAddressError(false);
         }
 
-        if (!formData.pincode) {
+        if (!formData.pincode || formData.pincode.toString().length !== 6) {
             setPincodeError(true);
         } else {
             setPincodeError(false);
@@ -158,8 +158,8 @@ function AddDonation() {
 
         handleErrors();
 
-        if (formData.date && formData.name && formData.mobileno &&
-            formData.address && formData.pincode && formData.paymenttowards && formData.amount &&
+        if (formData.date && formData.name && formData.mobileno && formData.mobileno.toString().length === 10 &&
+            formData.address && formData.pincode && formData.pincode.toString().length === 6 && formData.paymenttowards && formData.amount &&
             formData.paymenttype) {
             setShowLoader(true);
 
@@ -265,8 +265,14 @@ function AddDonation() {
                             <Row>
                                 <Col><Form.Group className="mb-3">
                                     <Form.Label>MOBILE NO</Form.Label>
-                                    <Form.Control type="test" placeholder="Enter mobile no" name="mobileno" value={formData.mobileno}
-                                        onChange={handleChange} autoComplete='off' minLength={10} maxLength={10} />
+                                    <Form.Control type="text" placeholder="Enter mobile no" name="mobileno" value={formData.mobileno}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            // Allow only numeric values and limit to 10 digits
+                                            if (/^\d*$/.test(value) && value.length <= 10) {
+                                                handleChange(e); // Update form data
+                                            }
+                                        }} autoComplete='off' />
                                     {mobileNoError ? <span className="field-error">Please enter mobile no</span> : <></>}
                                 </Form.Group></Col>
                                 <Col><Form.Group className="mb-3">
@@ -279,8 +285,14 @@ function AddDonation() {
                             <Row>
                                 <Col><Form.Group className="mb-3">
                                     <Form.Label>PIN CODE</Form.Label>
-                                    <Form.Control type="number" placeholder="Enter Pincode" name="pincode" value={formData.pincode}
-                                        onChange={handleChange} autoComplete='off' />
+                                    <Form.Control type="text" placeholder="Enter Pincode" name="pincode" value={formData.pincode}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            // Allow only numeric values and limit to 10 digits
+                                            if (/^\d*$/.test(value) && value.length <= 6) {
+                                                handleChange(e); // Update form data
+                                            }
+                                        }} autoComplete='off' />
                                     {pincodeError ? <span className="field-error">Please enter pin code</span> : <></>}
                                 </Form.Group></Col>
                                 <Col></Col>
